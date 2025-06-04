@@ -1,0 +1,20 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# .cursor/rules/management-review.mdc
+---
+description: Code review patterns for management-level oversight
+alwaysApply: false
+---
+
+Focus on:
+- Architecture and design patterns
+- Performance implications
+- Security considerations
+- Maintainability and team scalability
+- Technical debt identification
+- Clear documentation and comments
+
+Avoid deep implementation details unless specifically requested.

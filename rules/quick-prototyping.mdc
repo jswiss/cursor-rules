@@ -1,0 +1,17 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+# .cursor/rules/quick-prototyping.mdc
+---
+description: Rapid prototyping for proof-of-concepts and demos
+alwaysApply: false
+---
+
+Prioritize:
+- Working code over perfect code
+- Clear, readable implementations
+- Minimal dependencies
+- Quick iteration cycles
+- Good error handling for demos
