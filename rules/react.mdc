@@ -1,0 +1,71 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+**4. React Best Practices (`react.mdc`)**
+(Assuming a file named `react.mdc` exists with similar content structure)
+
+---
+description: Guidelines for writing modern React components and applications.
+globs: ["*.js", "*.jsx", "*.ts", "*.tsx"]
+alwaysApply: false
+---
+
+# React Development Best Practices
+
+## Project setup
+- Prefer Vite and Typescript
+- Avoid metaframeworks (eg NextJS)
+- Use prettier, eslint, Vitest, React Testing Library
+
+## Components
+- Prefer Functional Components with Hooks over Class Components.
+- Use PascalCase for component names (`MyComponent`).
+- Keep components small and focused (Single Responsibility Principle).
+- Use explicit `import React from 'react';` at the top (though not strictly needed with newer JSX transforms, it's good practice for clarity).
+- Define `propTypes` (if using JavaScript) or TypeScript interfaces for props.
+- Use destructuring for props: `function MyComponent({ name, count }) { ... }`
+- Prefer function declaration over arrow functions
+- Avoid hasty abstractions (see https://kentcdodds.com/blog/aha-programming)
+
+## State Management
+- Use `useState` for simple component-local state.
+- Use `useReducer` for more complex state logic or when state transitions depend on previous state.
+- Lift state up to the nearest common ancestor when multiple components need access to the same state.
+- For global or shared state, consider Context API (`useContext`) for moderate complexity or dedicated state management libraries for larger applications.
+- When using state management libraries, prefer Zustand.
+
+## Hooks
+- Only call Hooks at the top level of functional components or other custom Hooks.
+- Don't call Hooks inside loops, conditions, or nested functions.
+- Follow the Rules of Hooks. Use ESLint plugins (`eslint-plugin-react-hooks`) to enforce them.
+- Use `useEffect` for side effects (data fetching, subscriptions, manual DOM manipulations). Include a dependency array to control when the effect runs.
+- Use `useCallback` and `useMemo` to memoize functions and values respectively, optimizing performance where necessary (often related to `React.memo` or heavy computations).
+- Use custom hooks when stateful logic is repeated.
+
+## Keys
+- Provide stable and unique `key` props when rendering lists of elements (`<li key={item.id}>`). Avoid using array indices as keys if the list order can change or items can be inserted/deleted.
+
+## File Structure
+- Organize files by feature or route (e.g., `/features/Auth`, `/components/common`).
+- Colocate components, styles, tests, and hooks related to a specific feature.
+
+## Styling
+- Choose a consistent styling approach: prefer plain CSS, then Tailwind, ShadCN, etc.
+- Avoid inline styles for anything beyond simple dynamic adjustments.
+
+## Performance
+- Use `React.memo` to memoize components and prevent unnecessary re-renders.
+- Analyze performance with React DevTools Profiler.
+- Consider code splitting (e.g., `React.lazy` and `Suspense`) to reduce initial bundle size.
+
+## Accessibility (a11y)
+- Use semantic HTML elements (`<button>`, `<nav>`, `<main>`).
+- Ensure proper ARIA attributes are used when necessary.
+- Test with keyboard navigation and screen readers.
+
+## Testing
+- Employ Test Driven Development; write tests first, then the code, then run the tests and update the code until tests pass
+- Use Vitest and React Testing Library
+- Always test for accessibility
