@@ -1,0 +1,155 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+**Svelte Best Practices (`svelte.mdc`)**
+
+---
+description: Guidelines for writing modern SvelteKit applications using Runes syntax (Svelte 5+).
+globs: ["*.svelte", "+page.svelte", "+layout.svelte", "*.ts", "*.js"]
+alwaysApply: false
+---
+
+# SvelteKit + Runes Development Best Practices
+
+## Project Structure  
+- **SvelteKit with Runes**  
+  - Always initialize via `npx sv <project name>`.
+  - Use context7 to get the latest Svelte docs to use runes correctly.
+- **File‐based routing**  
+  - Place pages in `/src/routes`.  
+    - `+page.svelte` for page components.  
+    - `+layout.svelte` for shared wrappers.  
+    - `+error.svelte` for catch‐all error UI.  
+
+## Reactivity & State Management  
+- **Local Reactivity**  
+  - Use `$state`, `$derived`, and `$effect` for all reactivity. Do **not** use legacy `$:` or `let` for reactive state.
+  - Example:
+    ```svelte
+    <script>
+      let count = $state(0);
+      let doubled = $derived(count * 2);
+      $effect(() => {
+        console.log(count);
+      });
+    </script>
+    ```
+- **Props**
+  - Always receive props via destructuring with `$props()`:
+    ```svelte
+    <script>
+      let { foo } = $props();
+    </script>
+    ```
+  - For advanced cases (renaming, rest):
+    ```svelte
+    <script>
+      let { class: klass, ...rest } = $props();
+    </script>
+    ```
+- **Stores (Only When Shared)**  
+  - Use Svelte stores (`writable`, `derived`) only for state shared across multiple components/pages.
+  - For shared state in Svelte 5, you can also export `$state` objects from `.svelte.js` files:
+    ```js
+    // state.svelte.js
+    export const userState = $state({ name: 'name' });
+    ```
+  - In components, use `$storeName` in `<script>` and templates; avoid direct mutations—always call `store.set(...)` or `store.update(...)`.
+  - **Do not lift local state into stores unnecessarily.**
+
+## Components & Runes Syntax  
+- **Single‐File Components**  
+  - Each `.svelte` file must include `<script>`, `<style>`, and markup together.  
+- **Runes Control Flow**  
+  - Use `<#if condition>` … `<#else>` … `</#if>` for conditionals.
+  - Use `<#each items as item, i>` … `</#each>` for loops.
+  - For binding/mutating items in an each block, always use `array[i]`:
+    ```svelte
+    <script>
+      let array = $state([1, 2, 3]);
+    </script>
+    {#each array as entry, i}
+      <input bind:value={array[i]}>
+      <button onclick={() => array[i] = 4}>change</button>
+    {/each}
+    ```
+- **Dynamic Components**
+  - `<svelte:component>` is deprecated in runes mode. Instead, use a capitalized variable and render directly:
+    ```svelte
+    <script>
+      let condition = $state(false);
+      const Component = $derived(condition ? Y : Z);
+    </script>
+    <Component />
+    ```
+- **Attribute Concatenation**
+  - In Svelte 5, all complex or concatenated attribute values must be quoted:
+    ```svelte
+    <Component prop="this{is}valid" />
+    ```
+
+## Styling  
+- **Scoped CSS by Default**  
+  - Write `<style>` inside the component; selectors are scoped automatically.  
+  - Use `:global(.classname)` only when a truly global rule is required (e.g., CSS reset).  
+- **Tailwind/Utility First (Optional)**  
+  - If using Tailwind or another utility library, apply classes directly in markup; avoid mixing scoped styles and utility classes without need.  
+
+## Accessibility (a11y)  
+- **Semantic HTML**  
+  - Prefer `<button>`, `<header>`, `<nav>`, `<main>`, `<footer>`, etc. over generic `<div>` for interactive elements.  
+- **ARIA Attributes**  
+  - Add `aria‐label`, `role`, or `tabindex` only when needed (e.g., custom dropdowns).  
+- **Keyboard Navigation**  
+  - Ensure all interactive components are reachable via `Tab` and respond to `Enter`/`Space`.  
+
+## Performance  
+- **Server‐Side Data Loading**  
+  - Use SvelteKit’s `load` functions in `+page.server.ts` / `+layout.server.ts` for data fetching.  
+- **Code Splitting & Lazy Loading**  
+  - Leverage dynamic imports or SvelteKit’s built‐in route splitting.  
+- **Avoid Unnecessary Stores**  
+  - Don’t lift every piece of local state into a store. Use component‐local `$state` variables when state is private.  
+- **SvelteKit Page Data**
+  - For SvelteKit 2.16+, use the new `PageProps` type for props in pages/layouts:
+    ```svelte
+    <script>
+      /** @type {import('./$types').PageProps} */
+      let { data, form } = $props();
+    </script>
+    ```
+  - For accessing page data, use `$app/state` instead of `$app/stores`.
+
+## Testing  
+- **Unit & Component Tests**  
+  - Use Vitest + `@testing-library/svelte` for component tests.  
+  - Test reactive logic (e.g., `$effect` blocks) by updating props or stores in tests.  
+- **End‐to‐End (E2E)**  
+  - Set up Playwright or Cypress to simulate user flows, forms, and navigation.  
+- **Accessibility Testing**  
+  - Integrate `axe-core` or `@axe-core/playwright` to catch common a11y issues.  
+
+---
+
+## Svelte 5 Runes Quick Reference
+
+| Purpose         | Idiomatic Svelte 5 Runes Syntax                |
+|-----------------|------------------------------------------------|
+| Local state     | `let x = $state(0);`                           |
+| Derived state   | `let y = $derived(x * 2);`                     |
+| Side effects    | `$effect(() => { ... });`                      |
+| Props           | `let { foo } = $props();`                      |
+| Stores (shared) | `import { writable } from 'svelte/store';`     |
+| Dynamic comp.   | `const Comp = $derived(...); <Comp />`         |
+
+---
+
+**Migration notes:**
+- Do not use `export let foo` for props—always use `$props()` destructuring.
+- Do not use `$:` for reactivity—use `$derived` and `$effect`.
+- `<svelte:component>` is deprecated in runes mode; use dynamic components as shown above.
+- Always quote complex attribute values.
+- For each block bindings, use `array[i]` for mutation/binding.
+- For SvelteKit page data, use `$app/state` and the new `PageProps` type.
