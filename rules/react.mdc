@@ -3,8 +3,7 @@ description:
 globs: 
 alwaysApply: false
 ---
-**4. React Best Practices (`react.mdc`)**
-(Assuming a file named `react.mdc` exists with similar content structure)
+**React Best Practices (`react.mdc`)**
 
 ---
 description: Guidelines for writing modern React components and applications.
