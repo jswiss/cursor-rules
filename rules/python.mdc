@@ -1,0 +1,93 @@
+---
+description: Any python code
+globs: 
+alwaysApply: false
+---
+---
+description: Modern Python development with the latest version, tooling, type safety, and idiomatic code
+alwaysApply: false
+---
+
+You are an expert in Python development, using the latest Python version and tooling.
+
+## Core Principles
+
+- **Use the latest stable Python version** (currently Python 3.13.3 or higher)[1][5].
+- **Leverage modern tooling**: Ruff for linting, uv for package management, and mypy or Pyright for type checking[2][4].
+- **Write idiomatic ("pythonic") code**: Prefer clear, concise, and readable code using Python’s built-in features[3].
+- **Enforce type safety**: Use type hints and static type checkers to reduce runtime errors and improve maintainability[2].
+- **Automate code quality checks**: Integrate linters, formatters, and type checkers into your workflow and CI/CD pipelines[2].
+- **Keep dependencies up to date**: Use `uv` to manage packages and ensure compatibility with the latest Python version[4].
+
+## Technology Stack
+
+- **Python version**: 3.13.3 or higher
+- **Package manager**: uv
+- **Linter**: Ruff
+- **Formatter**: Ruff (or Black if preferred)
+- **Type checker**: mypy or Pyright
+- **Virtual environments**: Use `uv venv` or `python -m venv` for environment isolation
+- **CI/CD**: Integrate Ruff, mypy/Pyright, and pytest in your pipeline
+
+## Workflow
+
+1. **Set Python version**  
+   - Use `python3 --version` to confirm you are on 3.13.3 or higher[1][5].
+2. **Create virtual environment**  
+   - `uv venv` or `python -m venv .venv`
+3. **Install dependencies**  
+   - `uv pip install -r requirements.txt`
+4. **Run linter, formatter, and type checker**  
+   - `ruff check .`
+   - `ruff format .`
+   - `mypy .` or `pyright`
+5. **Write and test code**  
+   - Use pytest for testing.
+   - Write type-annotated code and use static type checkers.
+6. **Commit and push**  
+   - Ensure all code quality checks pass before committing.
+
+## Idiomatic Python Practices
+
+- **Prefer truthy/falsy checks:**
+if items: # instead of if len(items) > 0:
+
+- **Use context managers:**  
+with open('file.txt') as f:
+data = f.read()
+
+- **Leverage list/dict comprehensions:**  
+squares = [x**2 for x in range(10)]
+
+- **Use type hints:**  
+def greet(name: str) -> str:
+return f"Hello, {name}"
+
+- **Chained comparisons:**  
+if 5 < x < 10:
+
+- **Use f-strings for formatting:**  
+print(f"Value: {value}")
+
+- **Avoid mutable default arguments:**  
+def func(items=None):
+if items is None:
+items = []
+
+## Example File References
+
+- `@project/.python-version`: Example file to specify Python version (for tools like pyenv)
+- `@project/requirements.txt`: Example dependencies file
+
+## Best Practices
+
+- **Keep code modular and well-documented.**
+- **Use environment variables for secrets.**
+- **Write unit and integration tests.**
+- **Check for unused code and dependencies.**
+- **Review security advisories for dependencies.**
+- **Keep tools up to date with `uv tool upgrade`[4].**
+
+---
+
+> Use this rule whenever developing new Python projects or maintaining existing ones. Always ensure your code is idiomatic, type-safe, and uses the latest tooling.
