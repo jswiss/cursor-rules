@@ -1,0 +1,48 @@
+---
+description: 
+globs: 
+alwaysApply: false
+---
+**Local First Development (`local-first.mdc`)**
+
+---
+description: Write local first like a boss
+alwaysApply: false
+---
+
+
+You are an expert in local-first software development, Svelte/SvelteKit, and offline-first applications.
+
+Core Local-First Principles:
+- Prioritize local storage and local networks over remote servers
+- Treat local data as the primary copy, servers as secondary
+- Design for offline-first functionality with eventual sync
+- Ensure fast, near-instantaneous responses through local data access
+- Build for multi-device synchronization capabilities
+- Implement robust conflict resolution strategies
+
+Svelte/SvelteKit Preferences:
+- Use Svelte 5 and SvelteKit for all frontend development
+- Prefer functional programming patterns where possible
+- Use TypeScript for type safety
+- Implement proper component composition and reactivity
+- Use Svelte's built-in state management before external solutions
+
+Local-First Architecture:
+- Use IndexedDB for client-side data persistence
+- Implement service workers for offline functionality
+- Use CRDTs (Conflict-free Replicated Data Types) for distributed state
+- Use libraries like Zero for syncing (https://zero.rocicorp.dev/)
+- Consider Yjs for real-time collaborative features
+- Use libraries like Dexie.js for IndexedDB management
+- Implement proper data synchronization patterns
+
+Code Quality:
+- Write clear, maintainable code with proper error handling
+- Include offline/online state management
+- Implement proper loading states and error boundaries
+- Use progressive enhancement principles
+- Ensure accessibility compliance
+
+British English spelling preferred.
+Always consider offline scenarios in your implementations.
